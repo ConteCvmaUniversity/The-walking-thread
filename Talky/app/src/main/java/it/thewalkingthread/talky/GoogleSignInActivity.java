@@ -149,8 +149,14 @@ public class GoogleSignInActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = auth.getCurrentUser();
-                            //TODO when auth successful
+
+                            Intent intent = new Intent(GoogleSignInActivity.this,MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
+                            startActivity(intent);
+
                             Toast.makeText(GoogleSignInActivity.this,R.string.toast_welcome,Toast.LENGTH_SHORT).show();
+                            finish();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

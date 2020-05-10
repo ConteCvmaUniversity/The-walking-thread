@@ -21,4 +21,6 @@
     <dimen name="field_width_standard">160dp</dimen>
 
     <dimen name="button_horizontal_margin">8dp</dimen>
+    <dimen name="size_civUser_diameter">70dp</dimen>
+    <dimen name="margin_start_small">10dp</dimen>
 </resources>

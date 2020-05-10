@@ -27,4 +27,8 @@
     <string name="verify_email">Verify</string>
     <string name="reload">Reload</string>
 
+    <!-- ACCESS TO DB -->
+    <string name="parent_users">Users</string>
+    <string name="label_username_default">default.guest@conte.difi</string>
+
 </resources>

@@ -1,5 +1,6 @@
 package it.thewalkingthread.talky;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -97,14 +98,13 @@ public class EmailSignInActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                        if(task.isSuccessful()){
                                            //Start Main
-                                           /*
-                                           * Intent intent = new Intent(EmailSignInActivity.this,MainActivity.class);
-                                           * intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
-                                           * startActivity(intent);
-                                           * finish();
-                                           * */
-                                           Toast.makeText(EmailSignInActivity.this,R.string.toast_welcome,Toast.LENGTH_SHORT).show();
 
+                                           Intent intent = new Intent(EmailSignInActivity.this,MainActivity.class);
+                                           intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
+                                           startActivity(intent);
+
+                                           Toast.makeText(EmailSignInActivity.this,R.string.toast_welcome,Toast.LENGTH_SHORT).show();
+                                           finish();
 
                                        }
 
@@ -128,12 +128,12 @@ public class EmailSignInActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
                                 //Start Main
-                                /*
-                                 * Intent intent = new Intent(EmailSignInActivity.this,MainActivity.class);
-                                 * intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
-                                 * startActivity(intent);
-                                 * finish();
-                                 * */
+
+                                 Intent intent = new Intent(EmailSignInActivity.this,MainActivity.class);
+                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
+                                 startActivity(intent);
+                                 finish();
+
                                 Toast.makeText(EmailSignInActivity.this,"Daje",Toast.LENGTH_SHORT).show();
                             }
                             else {
