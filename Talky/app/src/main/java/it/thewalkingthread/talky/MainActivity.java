@@ -1,14 +1,13 @@
 package it.thewalkingthread.talky;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 import it.thewalkingthread.talky.Model.User;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     CircleImageView civ_profileImage;
     TextView tv_username;
     ImageButton imgbtn_settings;
+    FloatingActionButton fbtn_newchat;
 
     FirebaseUser firebaseUser;
     DatabaseReference reference;
@@ -67,13 +69,20 @@ public class MainActivity extends AppCompatActivity {
             tv_username = findViewById(R.id.tv_username);
             civ_profileImage = findViewById(R.id.civ_profileImage);
             imgbtn_settings = findViewById(R.id.imgbtn_settings);
+            fbtn_newchat = findViewById(R.id.fbtn_newchat);
 
+            fbtn_newchat.setOnClickListener(this);
             imgbtn_settings.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             //TODO Activity for settings -> TAAAAC
+
+            if(v.getId() == R.id.fbtn_newchat){
+                Intent intent = new Intent(MainActivity.this,UserListActivity.class);
+                startActivity(intent);
+            }
         }
     }
 

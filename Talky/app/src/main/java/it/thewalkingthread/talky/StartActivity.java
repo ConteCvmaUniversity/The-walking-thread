@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -17,7 +16,8 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        /*
+        //commentato perchè bisogna controllare il tipo di login, funziona solo se entri con email
         // Auto-login
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if(firebaseUser != null){
@@ -25,6 +25,8 @@ public class StartActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+         */
 
     }
 

@@ -30,5 +30,6 @@
     <!-- ACCESS TO DB -->
     <string name="parent_users">Users</string>
     <string name="label_username_default">default.guest@conte.difi</string>
+    <string name="label_users_title">All users list</string>
 
 </resources>
