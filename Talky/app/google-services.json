@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "90177416895",
+    "firebase_url": "https://esoneromp.firebaseio.com",
+    "project_id": "esoneromp",
+    "storage_bucket": "esoneromp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90177416895:android:dc7957edb7a7080014e00a",
+        "android_client_info": {
+          "package_name": "it.thewalkingthread.talky"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90177416895-ipldm1toi5i2e80pq5dv0hspnjrutobp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxn-Tkug-YNcVr1KmczcHhGbuaoKGafTw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90177416895-ipldm1toi5i2e80pq5dv0hspnjrutobp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

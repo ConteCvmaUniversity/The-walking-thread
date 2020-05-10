@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_logButton_width">235dp</dimen>
+    <dimen name="margin_top_veryLong">135dp</dimen>
+    <dimen name="margin_top_small">20dp</dimen>
+    <dimen name="size_logButton_height">56dp</dimen>
+    <dimen name="size_auth_logo">40dp</dimen>
+    <dimen name="radius_corner_small">4dp</dimen>
+    <dimen name="margin_top_logButton">28</dimen>
+    <dimen name="text_size_logButton">16sp</dimen>
+    <dimen name="margin_start_logButton">6dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- FIREBASE -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="icon_top_margin">24dp</dimen>
+    <dimen name="icon_bottom_margin">24dp</dimen>
+    <dimen name="title_bottom_margin">16dp</dimen>
+    <dimen name="field_width_standard">160dp</dimen>
+
+    <dimen name="button_horizontal_margin">8dp</dimen>
+</resources>
