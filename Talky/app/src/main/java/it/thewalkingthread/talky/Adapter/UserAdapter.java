@@ -1,6 +1,7 @@
 package it.thewalkingthread.talky.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import it.thewalkingthread.talky.MessageActivity;
 import it.thewalkingthread.talky.Model.User;
 import it.thewalkingthread.talky.R;
 
@@ -37,15 +39,24 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        User user = users.get(position);
+        final User user = users.get(position);
         holder.tv_username.setText(user.getUsername());
         if(user.getImageURL().equals("default")){
-            holder.civ_profileImage.setImageResource(R.mipmap.ic_launcher);
+            holder.civ_profileImage.setImageResource(R.drawable.ic_account);
 
         }
         else {
             Glide.with(context).load(user.getImageURL()).into(holder.civ_profileImage);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MessageActivity.class);
+                intent.putExtra("userID",user.getId());
+                context.startActivity(intent);
+
+            }
+        });
     }
 
 

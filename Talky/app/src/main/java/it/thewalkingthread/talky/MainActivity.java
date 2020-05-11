@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 User user = dataSnapshot.getValue(User.class);
                 tv_username.setText(user.getUsername());
                 if(user.getImageURL().equals("default")){
-                    civ_profileImage.setImageResource(R.mipmap.ic_launcher);
+                    civ_profileImage.setImageResource(R.drawable.ic_account);
                 } else{
                     Glide.with(MainActivity.this).load(user.getImageURL()).into(civ_profileImage);
                 }

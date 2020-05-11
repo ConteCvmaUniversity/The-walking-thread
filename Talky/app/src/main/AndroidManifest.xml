@@ -10,7 +10,10 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserListActivity"></activity>
+        <activity android:name=".MessageActivity"
+                    android:theme="@style/MainTheme"/>
+        <activity android:name=".UserListActivity"
+                    android:theme="@style/MainTheme"/>
         <activity android:name=".EmailSignInActivity" />
         <activity android:name=".FacebookSignInActivity" />
         <activity android:name=".GoogleSignInActivity" />

@@ -50,4 +50,12 @@
         <item name="android:textSize">36sp</item>
     </style>
 
+    <style name="MainTheme" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+
 </resources>
