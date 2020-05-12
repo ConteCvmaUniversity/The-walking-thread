@@ -14,21 +14,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_username"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/radius_corner_small"
-            android:text="TextView"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_message_user"
-            android:textStyle="bold"
-            android:windowSoftInputMode="stateHidden"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/civ_profileImage"
-            app:layout_constraintStart_toEndOf="@+id/fbtn_back"
-            app:layout_constraintTop_toTopOf="@+id/tb_chat" />
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_chat"
             android:layout_width="0dp"
@@ -67,6 +52,19 @@
             android:src="@drawable/ic_account"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tb_chat"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/margin_start_label_small"
+            android:text="@string/label_default"
+            android:textColor="@color/cardview_light_background"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/civ_profileImage"
+            app:layout_constraintStart_toEndOf="@+id/fbtn_back"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

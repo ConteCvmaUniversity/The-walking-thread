@@ -1,9 +1,11 @@
 package it.thewalkingthread.talky;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -78,8 +80,6 @@ public class MessageActivity extends AppCompatActivity {
             fbtn_send.setOnClickListener(this);
             et_message.setOnEditorActionListener(this);
 
-
-
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -110,6 +110,8 @@ public class MessageActivity extends AppCompatActivity {
                 String msg = et_message.getText().toString();
                 if (!msg.equals("")){
                     sendMessage(fuser.getUid(),userId,msg);
+                    hideKeyboard(MessageActivity.this);
+
                 }
                 else {
                     fbtn_send.setEnabled(false);
@@ -122,9 +124,19 @@ public class MessageActivity extends AppCompatActivity {
 
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            fbtn_send.setEnabled(true);
             return false;
         }
 
-
+        void hideKeyboard(Activity activity) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            //Find the currently focused view, so we can grab the correct window token from it.
+            View view = activity.getCurrentFocus();
+            //If no view currently has focus, create a new one, just so we can grab a window token from it
+            if (view == null) {
+                view = new View(activity);
+            }
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

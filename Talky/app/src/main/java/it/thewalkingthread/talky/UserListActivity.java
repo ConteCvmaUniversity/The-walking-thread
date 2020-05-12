@@ -76,9 +76,6 @@ public class UserListActivity extends AppCompatActivity {
                     ((LinearLayoutManager) layoutManager).getOrientation());
 
 
-
-            //dividerItemDecoration.setDrawable(getDrawable(R.drawable.divider));
-
             rv_users_list.addItemDecoration(dividerItemDecoration);
 
 

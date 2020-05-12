@@ -31,6 +31,7 @@
     <string name="parent_users">Users</string>
     <string name="label_username_default">default.guest@conte.difi</string>
     <string name="label_users_title">Users</string>
+    <string name="label_default">Default</string>
 
     <!-- New -->
 

@@ -26,4 +26,5 @@
     <dimen name="size_userCard_width">340dp</dimen>
     <dimen name="text_size_title_big">40sp</dimen>
     <dimen name="text_size_message_user">20sp</dimen>
+    <dimen name="margin_start_label_small" >6dp</dimen>
 </resources>
