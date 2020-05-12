@@ -19,12 +19,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import it.thewalkingthread.talky.Adapter.MessageAdapter;
+import it.thewalkingthread.talky.Model.Chat;
 import it.thewalkingthread.talky.Model.User;
 
 public class MessageActivity extends AppCompatActivity {
@@ -32,6 +37,12 @@ public class MessageActivity extends AppCompatActivity {
     Intent mIntent;
     DatabaseReference reference;
     String userId;
+
+    MessageAdapter messageAdapter;
+    List<Chat> chats;
+
+    RecyclerView rv_message;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +66,32 @@ public class MessageActivity extends AppCompatActivity {
         reference.child("Chats").push().setValue(hashMap);
     }
 
+    private void readMessages(final String myid, final String userId){
+        chats = new ArrayList<>();
+        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                chats.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if (chat.getReceiver().equals(myid) && chat.getSender().equals(userId) || chat.getReceiver().equals(userId) && chat.getSender().equals(myid)){
+                        chats.add(chat);
+                    }
+
+                    messageAdapter = new MessageAdapter(MessageActivity.this,chats);
+                    rv_message.setAdapter(messageAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     class Holder implements View.OnClickListener,TextView.OnEditorActionListener{
         FloatingActionButton fbtn_back;
         CircleImageView civ_profileImage;
@@ -62,7 +99,7 @@ public class MessageActivity extends AppCompatActivity {
 
         FloatingActionButton fbtn_send;
         EditText et_message;
-        RecyclerView rv_message;
+
 
 
 
@@ -74,6 +111,20 @@ public class MessageActivity extends AppCompatActivity {
             fbtn_send = findViewById(R.id.fbtn_send);
             et_message = findViewById(R.id.et_message);
             rv_message = findViewById(R.id.rv_message);
+
+            rv_message.setHasFixedSize(true);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+            linearLayoutManager.setStackFromEnd(true);
+            /*
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rv_message.getContext(),
+                    ((LinearLayoutManager) linearLayoutManager).getOrientation());
+
+
+            rv_message.addItemDecoration(dividerItemDecoration);
+
+             */
+
+            rv_message.setLayoutManager(linearLayoutManager);
 
 
             fbtn_back.setOnClickListener(this);
@@ -91,6 +142,7 @@ public class MessageActivity extends AppCompatActivity {
                     else {
                         Glide.with(MessageActivity.this).load(user.getImageURL()).into(civ_profileImage);
                     }
+                    readMessages(fuser.getUid(),userId);
                 }
 
                 @Override

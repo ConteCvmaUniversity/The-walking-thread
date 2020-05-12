@@ -10,4 +10,6 @@
     <color name="grey_500">#9E9E9E</color>
     <color name="color_user_card">#FFB907</color>
     <color name="color_background_invisible">#00F44336</color>
+    <color name="color_chat_1">#B4FFBE4F</color>
+    <color name="color_chat_2">#B2399CD2</color>
 </resources>
