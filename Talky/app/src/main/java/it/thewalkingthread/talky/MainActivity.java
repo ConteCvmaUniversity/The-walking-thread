@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            //TODO Activity for settings -> TAAAAC
 
             if(v.getId() == R.id.fbtn_newchat){
                 Intent intent = new Intent(MainActivity.this,UserListActivity.class);
@@ -84,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(v.getId() == R.id.imgbtn_settings){
                 Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+                intent.putExtra("Username", tv_username.getText().toString());
                 startActivity(intent);
             }
         }

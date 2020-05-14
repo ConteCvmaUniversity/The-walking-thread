@@ -37,8 +37,6 @@ public class EmailSignInActivity extends AppCompatActivity {
 
         new Holder();
 
-
-
     }
 
     class Holder implements View.OnClickListener{
@@ -134,7 +132,7 @@ public class EmailSignInActivity extends AppCompatActivity {
                                  startActivity(intent);
                                  finish();
 
-                                Toast.makeText(EmailSignInActivity.this,"Daje",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EmailSignInActivity.this,"Welcome",Toast.LENGTH_SHORT).show();
                             }
                             else {
                                 Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());

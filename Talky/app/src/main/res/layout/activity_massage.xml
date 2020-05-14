@@ -61,6 +61,7 @@
             android:paddingStart="@dimen/margin_start_label_small"
             android:text="@string/label_default"
             android:textColor="@color/cardview_light_background"
+            android:textSize="@dimen/text_title_size_small"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/civ_profileImage"

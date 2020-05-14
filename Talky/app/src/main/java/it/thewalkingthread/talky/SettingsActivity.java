@@ -4,26 +4,46 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import java.util.HashMap;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import it.thewalkingthread.talky.Model.User;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
+    FirebaseAuth auth;
+    Intent intent;
+    String username;
+    DatabaseReference reference;
+    FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        intent = getIntent();
+        username = intent.getStringExtra("Username");
 
         auth = FirebaseAuth.getInstance();
         new Holder();
@@ -34,6 +54,23 @@ public class SettingsActivity extends AppCompatActivity {
         Toast.makeText(SettingsActivity.this,R.string.toast_logOut,Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(SettingsActivity.this,StartActivity.class);
         this.startActivity(intent);
+    }
+
+    private void updateUsername(){
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).child("username");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                reference.setValue(username);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -61,8 +98,9 @@ public class SettingsActivity extends AppCompatActivity {
             fbtn_back.setOnClickListener(this);
 
             et_username.setOnEditorActionListener(this);
-
             et_username.setEnabled(false);
+            et_username.setText(username);
+
 
         }
 
@@ -92,9 +130,16 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
 
+
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if(actionId == EditorInfo.IME_ACTION_DONE){
+                username = et_username.getText().toString();
+                updateUsername();
+            }
             return false;
         }
+
     }
+
 }

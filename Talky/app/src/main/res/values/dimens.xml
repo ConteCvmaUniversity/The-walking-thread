@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="size_logButton_width">235dp</dimen>
-    <dimen name="margin_top_veryLong">135dp</dimen>
+    <dimen name="margin_top_veryLong">100dp</dimen>
     <dimen name="margin_top_small">20dp</dimen>
     <dimen name="size_logButton_height">56dp</dimen>
     <dimen name="size_auth_logo">40dp</dimen>
@@ -35,4 +35,6 @@
     <dimen name="size_toolbar_height">70dp</dimen>
     <dimen name="size_cardView_settings">350dp</dimen>
     <dimen name="size_padding_small">10dp</dimen>
+    <dimen name="text_title_size_small">16sp</dimen>
+    <dimen name="size_image_start">200dp</dimen>
 </resources>

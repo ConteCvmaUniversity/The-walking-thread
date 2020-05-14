@@ -18,7 +18,6 @@ public class StartActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-
         //commentato perchè bisogna controllare il tipo di login, funziona solo se entri con email
         // Auto-login
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -27,12 +26,6 @@ public class StartActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
-
-
-
-
-
     }
 
     @Override

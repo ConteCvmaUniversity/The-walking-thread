@@ -39,6 +39,7 @@
                 android:layout_marginStart="@dimen/margin_start_small"
                 android:text="@string/label_username_default"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/text_title_size_small"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imgbtn_settings"
