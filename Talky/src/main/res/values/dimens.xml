@@ -31,4 +31,8 @@
     <dimen name="margin_top_layoutBar">100</dimen>
     <dimen name="rotation_img_cardView_user">-90</dimen>
     <dimen name="text_size_title_mid">28sp</dimen>
+    <dimen name="size_diameter_big">200dp</dimen>
+    <dimen name="size_toolbar_height">70dp</dimen>
+    <dimen name="size_cardView_settings">350dp</dimen>
+    <dimen name="size_padding_small">10dp</dimen>
 </resources>

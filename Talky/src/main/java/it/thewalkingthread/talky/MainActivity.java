@@ -16,21 +16,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import it.thewalkingthread.talky.Adapter.UserAdapter;
 import it.thewalkingthread.talky.Model.Chat;
 import it.thewalkingthread.talky.Model.User;
-
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseUser firebaseUser;
     DatabaseReference reference;
-    //DatabaseReference referenceC;
+
 
     List<String> userList;
     List<User> mUsers;
@@ -55,108 +51,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         new Holder();
-        userLink();
-        readPreviousChats();
+
     }
 
-    private void userLink(){
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                tv_username.setText(user.getUsername());
-                if(user.getImageURL().equals("default")){
-                    civ_profileImage.setImageResource(R.drawable.ic_account);
-                } else{
-                    Glide.with(MainActivity.this).load(user.getImageURL()).into(civ_profileImage);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void readPreviousChats(){
-        //Managing Recycler view
-        rc_chats.setHasFixedSize(true);
-        //rc_chats.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        //firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
-        rc_chats.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rc_chats.getContext(), ((LinearLayoutManager) layoutManager).getOrientation());
-
-
-        //rc_chats.addItemDecoration(dividerItemDecoration);
-
-        userList = new ArrayList<>();
-
-        reference = FirebaseDatabase.getInstance().getReference("Chats");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userList.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Chat chat = snapshot.getValue(Chat.class);
-                    assert chat != null;
-                    if(chat.getSender().equals(firebaseUser.getUid())){
-                        userList.add(chat.getReceiver());
-                    }
-                    if(chat.getReceiver().equals(firebaseUser.getUid())){
-                        userList.add(chat.getSender());
-                    }
-                }
-
-                readChats();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void readChats(){
-        mUsers = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUsers.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
-                    for(String id : userList){
-                        if(user.getId().equals(id)){
-                            if(mUsers.size() != 0){
-                                for(User userl : mUsers){
-                                    if(!user.getId().equals(userl.getId())){
-                                        mUsers.add(user);
-                                    }
-                                }
-                            } else{
-                                mUsers.add(user);
-                            }
-                        }
-                    }
-                }
-                userAdapter = new UserAdapter(mUsers);
-                rc_chats.setAdapter(userAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     class Holder implements View.OnClickListener {
 
@@ -170,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
             fbtn_newchat.setOnClickListener(this);
             imgbtn_settings.setOnClickListener(this);
 
+            userLink();
+            readPreviousChats();
+
         }
 
         @Override
@@ -180,6 +81,105 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this,UserListActivity.class);
                 startActivity(intent);
             }
+
+            if(v.getId() == R.id.imgbtn_settings){
+                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+                startActivity(intent);
+            }
+        }
+
+        private void userLink(){
+            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    tv_username.setText(user.getUsername());
+                    if(user.getImageURL().equals("default")){
+                        civ_profileImage.setImageResource(R.drawable.ic_account);
+                    } else{
+                        Glide.with(MainActivity.this).load(user.getImageURL()).into(civ_profileImage);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        private void readPreviousChats(){
+            //Managing Recycler view
+            rc_chats.setHasFixedSize(true);
+
+
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+            rc_chats.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+
+            userList = new ArrayList<>();
+
+            reference = FirebaseDatabase.getInstance().getReference("Chats");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    userList.clear();
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        Chat chat = snapshot.getValue(Chat.class);
+                        assert chat != null;
+                        if(chat.getSender().equals(firebaseUser.getUid())){
+                            userList.add(chat.getReceiver());
+                        }
+                        if(chat.getReceiver().equals(firebaseUser.getUid())){
+                            userList.add(chat.getSender());
+                        }
+                    }
+
+                    readChats();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        private void readChats(){
+            mUsers = new ArrayList<>();
+            reference = FirebaseDatabase.getInstance().getReference("Users");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    mUsers.clear();
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        User user = snapshot.getValue(User.class);
+                        for(String id : userList){
+                            if(user.getId().equals(id)){
+                                if(mUsers.size() != 0){
+                                    for(User userl : mUsers){
+                                        if(!user.getId().equals(userl.getId())){
+                                            mUsers.add(user);
+                                        }
+                                    }
+                                } else{
+                                    mUsers.add(user);
+                                }
+                            }
+                        }
+                    }
+                    userAdapter = new UserAdapter(mUsers);
+                    rc_chats.setAdapter(userAdapter);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 

@@ -17,7 +17,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_chat"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/size_toolbar_height"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
