@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Talky</string>
+    <string name="label_auth_google">Sign in with Google</string>
+    <string name="label_auth_email">Sign in with Email</string>
+    <string name="label_auth_facebook">Sign in with Facebook</string>
+    <string name="label_not_implemented">Sorry this service is not implemented yet</string>
+
+    <!-- Toast -->
+    <string name="toast_empty_fields">All fields are required</string>
+    <string name="toast_pass_limit">Password must be at least 6 characters</string>
+    <string name="toast_welcome">Welcome</string>
+    <string name="toast_registration_failed">You can not register with both this email or password</string>
+    <string name="toast_wait">Please wait</string>
+
+    <!-- FIREBASE -->
+    <string name="desc_firebase_lockup">Firebase logo and name</string>
+    <string name="google_title_text">Google Sign In</string>
+    <string name="signed_in">Signed In</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="email_password_title_text">Email and Password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">Create Account</string>
+    <string name="verify_email">Verify</string>
+    <string name="reload">Reload</string>
+
+    <!-- ACCESS TO DB -->
+    <string name="parent_users">Users</string>
+    <string name="label_username_default">default.guest@conte.difi</string>
+    <string name="label_users_title">Users</string>
+    <string name="label_default">Default</string>
+    <string name="chat_list">Chats</string>
+    <string name="label_settings">Settings</string>
+    <string name="label_name">Username</string>
+    <string name="btn_logOut">Log Out</string>
+
+    <!-- New -->
+    <string name="toast_logOut">Log out successful</string>
+
+</resources>
