@@ -1,16 +1,25 @@
 package it.thewalkingthread.talky;
 
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,12 +28,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import it.thewalkingthread.talky.Model.User;
@@ -37,6 +50,11 @@ public class SettingsActivity extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseUser firebaseUser;
 
+    StorageReference storageReference;
+    private static final int IMAGE_REQUEST = 1;
+    private Uri imageUri;
+    private StorageTask uploadTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
         intent = getIntent();
         username = intent.getStringExtra("Username");
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         auth = FirebaseAuth.getInstance();
         new Holder();
     }
@@ -57,13 +76,11 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void updateUsername(){
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid()).child("username");
-
-        reference.addValueEventListener(new ValueEventListener() {
+        final DatabaseReference refUsername = reference.child("username");
+        refUsername.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                reference.setValue(username);
+                refUsername.setValue(username);
             }
 
             @Override
@@ -73,6 +90,82 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void updateImage(){
+        storageReference = FirebaseStorage.getInstance().getReference("uploads");
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, IMAGE_REQUEST);
+    }
+
+    private String getFileExtension(Uri uri){
+        ContentResolver contentResolver = SettingsActivity.this.getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    private void uploadImage(){
+        final ProgressDialog pd = new ProgressDialog(SettingsActivity.this);
+        pd.setMessage("Uploading...");
+        pd.show();
+
+        if (imageUri != null){
+            final StorageReference fileReference = storageReference.child(System.currentTimeMillis() +"."+getFileExtension(imageUri));
+            uploadTask = fileReference.putFile(imageUri);
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()){
+                        Uri downloadUri = task.getResult();
+                        String mUri = downloadUri.toString();
+
+                        final DatabaseReference refImage = reference.child("imageURL");
+                        refImage.setValue(mUri);
+
+                        pd.dismiss();
+                    }
+                    else{
+                        Toast.makeText(SettingsActivity.this,"Failed",Toast.LENGTH_SHORT).show();
+                        pd.dismiss();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(SettingsActivity.this, e.getMessage(),Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
+                }
+            });
+        }
+        else{
+            Toast.makeText(SettingsActivity.this,"No image selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+            imageUri = data.getData();
+
+            if (uploadTask != null && uploadTask.isInProgress()){
+                Toast.makeText(SettingsActivity.this, "Upload in progress",Toast.LENGTH_SHORT).show();
+            }
+            else{
+                uploadImage();
+            }
+        }
+    }
 
     class Holder implements View.OnClickListener, TextView.OnEditorActionListener {
 
@@ -101,19 +194,39 @@ public class SettingsActivity extends AppCompatActivity {
             et_username.setEnabled(false);
             et_username.setText(username);
 
+            reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    if(user.getImageURL().equals("default")){
+                        civ_profile.setImageResource(R.drawable.ic_account);
+                    }
+                    else{
+                        Glide.with(SettingsActivity.this).load(user.getImageURL()).into(civ_profile);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
         }
 
         @Override
         public void onClick(View v) {
 
-            switch (v.getId()){
+            switch (v.getId()) {
 
                 case R.id.fbtn_back:
                     finish();
+                    break;
 
                 case R.id.fbtn_change_img:
-
+                    updateImage();
                     break;
 
                 case R.id.btn_logOut:
@@ -123,11 +236,7 @@ public class SettingsActivity extends AppCompatActivity {
                 case R.id.cv_username:
                     et_username.setEnabled(true);
                     break;
-
-
             }
-
-
         }
 
 

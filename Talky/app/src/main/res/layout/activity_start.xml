@@ -58,7 +58,7 @@
         android:id="@+id/cv_google"
         android:layout_width="@dimen/size_logButton_width"
         android:layout_height="@dimen/size_logButton_height"
-        android:layout_marginTop="@dimen/margin_top_veryLong"
+        android:layout_marginTop="@dimen/margin_start_chat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_logo">
@@ -70,8 +70,8 @@
             android:src="@drawable/fui_idp_button_background_google" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="237dp"
+            android:layout_height="58dp">
 
             <ImageView
                 android:id="@+id/iv_google_logo"
