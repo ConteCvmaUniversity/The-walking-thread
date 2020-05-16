@@ -3,13 +3,13 @@ package it.thewalkingthread.talky.Model;
 public class User {
     private String id;
     private String username;
-    private String email;
+    //private String email;
     private String imageURL;
 
-    public User(String id, String username, String email,String imageURL){
+    public User(String id, String username,String imageURL){
         this.id = id;
         this.username = username;
-        this.email = email;
+        //this.email = email;
         this.imageURL = imageURL;
 
     }
@@ -39,10 +39,10 @@ public class User {
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
-    public String getEmail() {
+    /*public String getEmail() {
         return email;
     }
     public void setEmail(String email) {
         this.email = email;
-    }
+    }*/
 }

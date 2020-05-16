@@ -34,16 +34,16 @@
 
             <TextView
                 android:id="@+id/tv_username"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/size_name_width"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_start_small"
                 android:text="@string/label_username_default"
+                android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_title_size_small"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imgbtn_settings"
-                app:layout_constraintStart_toEndOf="@+id/civ_profileImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton

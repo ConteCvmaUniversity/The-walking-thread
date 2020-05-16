@@ -35,6 +35,10 @@
     <dimen name="size_toolbar_height">70dp</dimen>
     <dimen name="size_cardView_settings">350dp</dimen>
     <dimen name="size_padding_small">10dp</dimen>
-    <dimen name="text_title_size_small">16sp</dimen>
+    <dimen name="text_title_size_small">20sp</dimen>
+    <dimen name="text_size_cardview_user">16sp</dimen>
     <dimen name="size_image_start">200dp</dimen>
+    <dimen name="size_name_width">250dp</dimen>
+
+
 </resources>

@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +43,8 @@ import androidx.cardview.widget.CardView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import it.thewalkingthread.talky.Model.User;
 
+import static android.text.TextUtils.substring;
+
 public class SettingsActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
@@ -54,6 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
     private static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
     private StorageTask uploadTask;
+    private String imageURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         auth = FirebaseAuth.getInstance();
+        //imageURL = "default";
         new Holder();
     }
 
@@ -106,10 +111,14 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void uploadImage(){
         final ProgressDialog pd = new ProgressDialog(SettingsActivity.this);
-        pd.setMessage("Uploading...");
+        pd.setMessage(getResources().getString(R.string.progress_dialog));
+
         pd.show();
 
         if (imageUri != null){
+            if(!imageURL.equals("default"))
+                deletePreviousImage();
+
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis() +"."+getFileExtension(imageUri));
             uploadTask = fileReference.putFile(imageUri);
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -128,13 +137,12 @@ public class SettingsActivity extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         String mUri = downloadUri.toString();
 
-                        final DatabaseReference refImage = reference.child("imageURL");
-                        refImage.setValue(mUri);
+                        reference.child("imageURL").setValue(mUri);
 
                         pd.dismiss();
                     }
                     else{
-                        Toast.makeText(SettingsActivity.this,"Failed",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingsActivity.this,R.string.toast_fail,Toast.LENGTH_SHORT).show();
                         pd.dismiss();
                     }
                 }
@@ -147,10 +155,20 @@ public class SettingsActivity extends AppCompatActivity {
             });
         }
         else{
-            Toast.makeText(SettingsActivity.this,"No image selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SettingsActivity.this,R.string.toast_no_image_selected, Toast.LENGTH_SHORT).show();
         }
     }
+    private void deletePreviousImage(){
+        String prova = imageURL;
+        String jpeg = imageURL.substring(imageURL.indexOf("%2F")+ "%2F".length(), imageURL.indexOf("?"));
+        storageReference.child(jpeg).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+            }
+        });
 
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -159,7 +177,7 @@ public class SettingsActivity extends AppCompatActivity {
             imageUri = data.getData();
 
             if (uploadTask != null && uploadTask.isInProgress()){
-                Toast.makeText(SettingsActivity.this, "Upload in progress",Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingsActivity.this,R.string.toast_upload_in_progress,Toast.LENGTH_SHORT).show();
             }
             else{
                 uploadImage();
@@ -199,14 +217,15 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
-                    if(user.getImageURL().equals("default")){
+                    imageURL = user.getImageURL();
+                    if(imageURL.equals("default")){
                         civ_profile.setImageResource(R.drawable.ic_account);
                     }
                     else{
-                        Glide.with(SettingsActivity.this).load(user.getImageURL()).into(civ_profile);
+                        Glide.with(SettingsActivity.this).load(imageURL).into(civ_profile);
                     }
-
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {

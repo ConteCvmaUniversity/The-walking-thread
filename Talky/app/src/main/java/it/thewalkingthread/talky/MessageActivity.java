@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -17,7 +18,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,17 +34,28 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import it.thewalkingthread.talky.Adapter.MessageAdapter;
 import it.thewalkingthread.talky.Model.Chat;
 import it.thewalkingthread.talky.Model.User;
+import it.thewalkingthread.talky.Notification.Client;
+import it.thewalkingthread.talky.Notification.Data;
+import it.thewalkingthread.talky.Notification.MyResponse;
+import it.thewalkingthread.talky.Notification.Sender;
+import it.thewalkingthread.talky.Notification.Token;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MessageActivity extends AppCompatActivity {
     FirebaseUser fuser;
     Intent mIntent;
     DatabaseReference reference;
     String userId;
+    APIService apiService;
+    Boolean notify = false;
 
     MessageAdapter messageAdapter;
     List<Chat> chats;
 
     RecyclerView rv_message;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +66,12 @@ public class MessageActivity extends AppCompatActivity {
         userId = mIntent.getStringExtra("userID");
         fuser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+        apiService = Client.getClient("Https://fcm.googleapis.com/").create(APIService.class);
 
         new Holder();
     }
 
-    private void sendMessage(String sender,String receiver, String message){
+    private void sendMessage(String sender, final String receiver, String message){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("sender",sender);
@@ -64,6 +79,59 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("message",message);
 
         reference.child("Chats").push().setValue(hashMap);
+
+        final String msg = message;
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if(notify)
+                    sendNotification(receiver, user.getUsername(), msg);
+                notify = false;
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void sendNotification(final String receiver, final String username, final String message){
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    Data data = new Data(fuser.getUid(), R.mipmap.ic_launcher, username+": "+message,"New Message", userId);
+                    Sender sender = new Sender(data,token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<MyResponse>() {
+                                @Override
+                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                                    if(response.code() == 200){
+                                        if(response.body().success != 1){
+                                            Toast.makeText(MessageActivity.this, R.string.toast_fail,Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MyResponse> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void readMessages(final String myid, final String userId){
@@ -89,6 +157,15 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
+    }
+
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token tokenl = new Token(token);
+        reference.child(fuser.getUid()).setValue(tokenl);
 
     }
 
@@ -159,6 +236,7 @@ public class MessageActivity extends AppCompatActivity {
                 finish();
             }
             if (v.getId() == R.id.fbtn_send){
+                notify = true;
                 String msg = et_message.getText().toString();
                 if (!msg.equals("")){
                     sendMessage(fuser.getUid(),userId,msg);

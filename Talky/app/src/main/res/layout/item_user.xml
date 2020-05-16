@@ -24,6 +24,7 @@
                 android:layout_marginStart="@dimen/margin_start_small"
                 android:text="@string/label_username_default"
                 android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_cardview_user"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/civ_profileImage"
