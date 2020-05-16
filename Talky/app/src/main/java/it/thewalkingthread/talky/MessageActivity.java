@@ -20,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -158,16 +157,11 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        updateToken(FirebaseInstanceId.getInstance().getToken());
+
 
     }
 
-    private void updateToken(String token){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-        Token tokenl = new Token(token);
-        reference.child(fuser.getUid()).setValue(tokenl);
 
-    }
 
     class Holder implements View.OnClickListener,TextView.OnEditorActionListener{
         FloatingActionButton fbtn_back;

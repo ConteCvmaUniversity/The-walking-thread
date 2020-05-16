@@ -11,7 +11,6 @@ import android.view.inputmethod.EditorInfo;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,12 +37,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import it.thewalkingthread.talky.Model.User;
-
-import static android.text.TextUtils.substring;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -264,6 +259,7 @@ public class SettingsActivity extends AppCompatActivity {
             if(actionId == EditorInfo.IME_ACTION_DONE){
                 username = et_username.getText().toString();
                 updateUsername();
+                et_username.setEnabled(false);
             }
             return false;
         }

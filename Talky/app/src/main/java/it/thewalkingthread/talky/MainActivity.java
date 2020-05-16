@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import it.thewalkingthread.talky.Adapter.UserAdapter;
 import it.thewalkingthread.talky.Model.Chat;
 import it.thewalkingthread.talky.Model.User;
+import it.thewalkingthread.talky.Notification.Token;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user = dataSnapshot.getValue(User.class);
+                    assert user != null;
                     tv_username.setText(user.getUsername());
                     if(user.getImageURL().equals("default")){
                         civ_profileImage.setImageResource(R.drawable.ic_account);
@@ -180,6 +183,16 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+
+            updateToken(FirebaseInstanceId.getInstance().getToken());
+        }
+
+
+        private void updateToken(String token){
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+            Token tokenl = new Token(token);
+            reference.child(firebaseUser.getUid()).setValue(tokenl);
+
         }
     }
 
