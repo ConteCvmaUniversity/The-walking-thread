@@ -22,11 +22,13 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import it.thewalkingthread.talky.Adapter.UserAdapter;
 import it.thewalkingthread.talky.Model.Chat;
+import it.thewalkingthread.talky.Model.Chatlist;
 import it.thewalkingthread.talky.Model.User;
 import it.thewalkingthread.talky.Notification.Token;
 
@@ -42,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference reference;
 
 
-    List<String> userList;
+    //List<String> userList;
+    List<Chatlist> userList;
     List<User> mUsers;
 
     UserAdapter userAdapter;
@@ -121,27 +124,26 @@ public class MainActivity extends AppCompatActivity {
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
             rc_chats.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rc_chats.getContext(),
+                    ((LinearLayoutManager) layoutManager).getOrientation());
+
+
+            rc_chats.addItemDecoration(dividerItemDecoration);
 
 
             userList = new ArrayList<>();
-
-            reference = FirebaseDatabase.getInstance().getReference("Chats");
+            reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(firebaseUser.getUid());
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     userList.clear();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        Chat chat = snapshot.getValue(Chat.class);
-                        assert chat != null;
-                        if(chat.getSender().equals(firebaseUser.getUid())){
-                            userList.add(chat.getReceiver());
-                        }
-                        if(chat.getReceiver().equals(firebaseUser.getUid())){
-                            userList.add(chat.getSender());
-                        }
+                        Chatlist chatlist = snapshot.getValue(Chatlist.class);
+                        userList.add(chatlist);
                     }
 
-                    readChats();
+                    chatList();
+
                 }
 
                 @Override
@@ -149,9 +151,10 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+            updateToken(FirebaseInstanceId.getInstance().getToken());
         }
 
-        private void readChats(){
+        private void chatList(){
             mUsers = new ArrayList<>();
             reference = FirebaseDatabase.getInstance().getReference("Users");
             reference.addValueEventListener(new ValueEventListener() {
@@ -160,17 +163,9 @@ public class MainActivity extends AppCompatActivity {
                     mUsers.clear();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                         User user = snapshot.getValue(User.class);
-                        for(String id : userList){
-                            if(user.getId().equals(id)){
-                                if(mUsers.size() != 0){
-                                    for(User userl : mUsers){
-                                        if(!user.getId().equals(userl.getId())){
-                                            mUsers.add(user);
-                                        }
-                                    }
-                                } else{
-                                    mUsers.add(user);
-                                }
+                        for(Chatlist chatlist : userList){
+                            if(user.getId().equals(chatlist.getId())){
+                                mUsers.add(user);
                             }
                         }
                     }
@@ -183,8 +178,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-
-            updateToken(FirebaseInstanceId.getInstance().getToken());
         }
 
 

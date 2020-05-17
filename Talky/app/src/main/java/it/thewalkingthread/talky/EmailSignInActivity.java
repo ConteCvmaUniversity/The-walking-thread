@@ -111,7 +111,7 @@ public class EmailSignInActivity extends AppCompatActivity {
                             }
                             else{
                                 Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
-                                Toast.makeText(EmailSignInActivity.this,R.string.toast_registration_failed,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EmailSignInActivity.this, R.string.toast_registration_failed,Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -132,11 +132,11 @@ public class EmailSignInActivity extends AppCompatActivity {
                                  startActivity(intent);
                                  finish();
 
-                                Toast.makeText(EmailSignInActivity.this,"Welcome",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EmailSignInActivity.this, R.string.toast_welcome,Toast.LENGTH_SHORT).show();
                             }
                             else {
                                 Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
-                                Toast.makeText(EmailSignInActivity.this,"Authentication failed",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EmailSignInActivity.this, R.string.toast_auth_failed,Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

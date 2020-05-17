@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_auth_google">Registrati con Google</string>
+    <string name="label_auth_email">Registrati con Email</string>
+    <string name="label_auth_facebook">Registrati con Facebook</string>
+    <string name="label_not_implemented">Questo servizio non è ancora implementato</string>
+    <string name="toast_empty_fields">Sono richiesti tutti i campi</string>
+    <string name="toast_pass_limit">La password deve essere almeno di 6 caratteri</string>
+    <string name="toast_welcome">Benvenuto</string>
+    <string name="toast_registration_failed">Non puoi registrarti con questa Email e questa password</string>
+    <string name="toast_wait">Attendere</string>
+    <string name="progress_dialog">Caricamento</string>
+    <string name="toast_fail">Operaione non riuscita</string>
+    <string name="toast_no_image_selected">Nessuna immagine selezionata</string>
+    <string name="toast_upload_in_progress">Caricamento in corso</string>
+    <string name="google_title_text">Registrati con Google</string>
+    <string name="signed_in">Accesso eseguito</string>
+    <string name="signed_out">Disconnesso</string>
+    <string name="sign_out">Esci</string>
+    <string name="disconnect">Disconnettiti</string>
+    <string name="email_password_title_text">Email e Password</string>
+    <string name="sign_in">Accedi</string>
+    <string name="create_account">Crea un profilo</string>
+    <string name="verify_email">Verifica</string>
+    <string name="reload">Ricaricamento</string>
+    <string name="parent_users">Utenti</string>
+    <string name="label_users_title">Utenti</string>
+    <string name="chat_list">Chat</string>
+    <string name="label_settings">Impostazioni</string>
+    <string name="btn_logOut">Esci</string>
+    <string name="toast_logOut">Uscita completata</string>
+    <string name="toast_auth_failed">Autenticazione fallita</string>
+</resources>
