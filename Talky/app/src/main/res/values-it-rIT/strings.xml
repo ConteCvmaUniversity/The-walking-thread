@@ -30,4 +30,6 @@
     <string name="btn_logOut">Esci</string>
     <string name="toast_logOut">Uscita completata</string>
     <string name="toast_auth_failed">Autenticazione fallita</string>
+    <string name="toast_permission_denied">Ci dispiace, non possiamo aggiornare la tua foto se non ce lo permetti</string>
+
 </resources>

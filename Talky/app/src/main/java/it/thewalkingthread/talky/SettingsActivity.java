@@ -1,8 +1,10 @@
 package it.thewalkingthread.talky;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -37,11 +39,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import it.thewalkingthread.talky.Model.User;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private static final int MY_PERMISSION_REQUEST = 100;
     FirebaseAuth auth;
     Intent intent;
     String username;
@@ -89,14 +98,45 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void updateImage(){
-        storageReference = FirebaseStorage.getInstance().getReference("uploads");
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, IMAGE_REQUEST);
+    private void askPermissions(){
+        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for(String s: permissions){
+            if(ContextCompat.checkSelfPermission(SettingsActivity.this,s) != PackageManager.PERMISSION_GRANTED)
+                listPermissionsNeeded.add(s);
+        }
+        if(!listPermissionsNeeded.isEmpty()){
+            ActivityCompat.requestPermissions(SettingsActivity.this,listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),MY_PERMISSION_REQUEST);
+            return;
+        }
+        updateImage();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        switch(requestCode){
+            case MY_PERMISSION_REQUEST:{
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    updateImage();
+                } else {
+                    Toast.makeText(SettingsActivity.this, R.string.toast_permission_denied,Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            }
+        }
+    }
+    private void updateImage(){
+            storageReference = FirebaseStorage.getInstance().getReference("uploads");
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent, IMAGE_REQUEST);
+
+    }
+
 
     private String getFileExtension(Uri uri){
         ContentResolver contentResolver = SettingsActivity.this.getContentResolver();
@@ -240,7 +280,7 @@ public class SettingsActivity extends AppCompatActivity {
                     break;
 
                 case R.id.fbtn_change_img:
-                    updateImage();
+                    askPermissions();
                     break;
 
                 case R.id.btn_logOut:
