@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -185,7 +186,7 @@ public class MessageActivity extends AppCompatActivity {
         FloatingActionButton fbtn_send;
         EditText et_message;
 
-
+        RequestOptions requestOptions;
 
 
         Holder(){
@@ -208,6 +209,7 @@ public class MessageActivity extends AppCompatActivity {
             rv_message.addItemDecoration(dividerItemDecoration);
 
              */
+            requestOptions = new RequestOptions().placeholder(R.drawable.ic_account).circleCrop();
 
             rv_message.setLayoutManager(linearLayoutManager);
 
@@ -225,7 +227,7 @@ public class MessageActivity extends AppCompatActivity {
                         civ_profileImage.setImageResource(R.drawable.ic_account);
                     }
                     else {
-                        Glide.with(MessageActivity.this).load(user.getImageURL()).into(civ_profileImage);
+                        Glide.with(MessageActivity.this).load(user.getImageURL()).apply(requestOptions).into(civ_profileImage);
                     }
                     readMessages(fuser.getUid(),userId);
                 }

@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     class Holder implements View.OnClickListener {
+        RequestOptions requestOptions;
 
         Holder(){
             tv_username = findViewById(R.id.tv_username);
@@ -72,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
             fbtn_newchat.setOnClickListener(this);
             imgbtn_settings.setOnClickListener(this);
+
+            requestOptions = new RequestOptions().placeholder(R.drawable.ic_account).circleCrop();
 
             userLink();
             readPreviousChats();
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     if(user.getImageURL().equals("default")){
                         civ_profileImage.setImageResource(R.drawable.ic_account);
                     } else{
-                        Glide.with(MainActivity.this).load(user.getImageURL()).into(civ_profileImage);
+                        Glide.with(MainActivity.this).load(user.getImageURL()).apply(requestOptions).into(civ_profileImage);
                     }
                 }
 

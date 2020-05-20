@@ -17,6 +17,7 @@
     <string name="toast_no_image_selected">No image selected</string>
     <string name="toast_upload_in_progress">Upload in progress</string>
     <string name="toast_permission_denied">Sorry, we can\'t change your photo unless you allow it</string>
+    <string name="toast_facebook">Sorry this service hasn\'t been implemented yet!</string>
 
     <!-- FIREBASE -->
     <string name="desc_firebase_lockup" translatable="false">Firebase logo and name</string>

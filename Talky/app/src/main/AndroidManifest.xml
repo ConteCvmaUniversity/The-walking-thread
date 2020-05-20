@@ -27,7 +27,6 @@
         <activity
             android:name=".EmailSignInActivity"
             android:theme="@style/MainTheme" />
-        <activity android:name=".FacebookSignInActivity" />
         <activity android:name=".GoogleSignInActivity" />
         <activity android:name=".StartActivity"
             android:theme="@style/MainTheme">

@@ -85,20 +85,14 @@ public class GoogleSignInActivity extends AppCompatActivity {
         Holder(){
             signInButton = findViewById(R.id.signInButton);
             signInButton.setOnClickListener(this);
-            Quit = findViewById(R.id.Quit);
-            Quit.setOnClickListener(this);
         }
 
         @Override
-        public void onClick(View v) {
-            if (v.getId() == R.id.signInButton) {
-                signIn();
-            }
-            else if(v.getId() == R.id.Quit)
-            {
-                revokeAccess();
-            }
+        public void onClick(View v){
+            signIn();
         }
+
+
     }
 
     private void signIn() {
