@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -222,7 +221,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     class Holder implements View.OnClickListener, TextView.OnEditorActionListener {
-        RequestOptions requestOptions;
 
         CircleImageView civ_profile;
         FloatingActionButton fbtn_change_img;
@@ -249,8 +247,6 @@ public class SettingsActivity extends AppCompatActivity {
             et_username.setEnabled(false);
             et_username.setText(username);
 
-            requestOptions = new RequestOptions().placeholder(R.drawable.ic_account).circleCrop();
-
             reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -261,7 +257,7 @@ public class SettingsActivity extends AppCompatActivity {
                         civ_profile.setImageResource(R.drawable.ic_account);
                     }
                     else{
-                        Glide.with(SettingsActivity.this).load(imageURL).apply(requestOptions).into(civ_profile);
+                        Glide.with(SettingsActivity.this).load(imageURL).into(civ_profile);
                     }
                 }
 

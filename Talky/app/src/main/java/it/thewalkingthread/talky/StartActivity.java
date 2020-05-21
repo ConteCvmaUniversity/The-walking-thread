@@ -3,7 +3,6 @@ package it.thewalkingthread.talky;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,7 +61,7 @@ public class StartActivity extends AppCompatActivity {
             }
 
             else if (v.getId()==R.id.cv_facebook){
-                Toast.makeText(StartActivity.this, R.string.toast_facebook,Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(StartActivity.this,GoogleSignInActivity.class));
             }
             else{
                 startActivity(new Intent(StartActivity.this,EmailSignInActivity.class));

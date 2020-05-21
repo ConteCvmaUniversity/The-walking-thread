@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -23,9 +22,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.Holder> {
 
     Context context;
     private List<User> users;
-    RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_account).circleCrop();;
 
     public UserAdapter(List<User> users){
+
         this.users = users;
     }
 
@@ -34,6 +33,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.Holder> {
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_user,parent,false);
+
         return new Holder(view);
     }
 
@@ -46,7 +46,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.Holder> {
 
         }
         else {
-            Glide.with(context).load(user.getImageURL()).apply(requestOptions).into(holder.civ_profileImage);
+            Glide.with(context).load(user.getImageURL()).into(holder.civ_profileImage);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +58,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.Holder> {
             }
         });
     }
+
+
 
     @Override
     public int getItemCount() {

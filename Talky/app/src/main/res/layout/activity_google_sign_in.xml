@@ -32,6 +32,12 @@
             android:text="@string/google_title_text"
             android:theme="@style/ThemeOverlay.MyTitleText" />
 
+        <Button
+            android:id="@+id/Quit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ToBE Cancelled" />
+
     </LinearLayout>
 
     <RelativeLayout
