@@ -16,20 +16,31 @@
         android:theme="@style/AppTheme">
         <activity android:name=".SettingsActivity"
             android:theme="@style/MainTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MessageActivity"
             android:theme="@style/MainTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".UserListActivity"
-            android:theme="@style/MainTheme" />
+            android:theme="@style/MainTheme"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".EmailSignInActivity"
-            android:theme="@style/MainTheme" />
-        <activity android:name=".FacebookSignInActivity" />
-        <activity android:name=".GoogleSignInActivity" />
+            android:theme="@style/MainTheme"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".GoogleSignInActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity android:name=".StartActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/MainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,7 +50,9 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/MainTheme" />
+            android:theme="@style/MainTheme"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"

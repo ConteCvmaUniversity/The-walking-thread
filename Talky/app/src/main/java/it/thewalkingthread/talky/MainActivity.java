@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference reference;
 
-
-    //List<String> userList;
     List<Chatlist> userList;
     List<User> mUsers;
 

@@ -46,5 +46,6 @@
     <!-- New -->
     <string name="toast_logOut">Log out successful</string>
     <string name="start_title_talky" translatable="false">Talky!</string>
+    <string name="toast_facebook">"We are sorry, this service hasn't been implemented yet! "</string>
 
 </resources>
